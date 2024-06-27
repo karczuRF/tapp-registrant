@@ -1,0 +1,35 @@
+{
+  "packageName": "tstttt",
+  "version": "1.0.0",
+  "displayName": "The Tapplet description",
+  "status": "MVP",
+  "category": "DEFI",
+  "author": {
+    "name": "karczuRF",
+    "website": "https://api.github.com/users/karczuRF/repos"
+  },
+  "about": {
+    "summary": "ssss",
+    "description": "ddddll"
+  },
+  "design": {
+    "logoPath": "src/images/logo.svg",
+    "backgroundPath": "src/images/background.svg"
+  },
+  "repository": {
+    "type": "git",
+    "url": "",
+    "codeowners": []
+  },
+  "source": {
+    "location": {
+      "npm": {
+        "packageName": "tstttt",
+        "registry": "https://registry.npmjs.org/",
+        "distTarball": "https://registry.npmjs.org/tstttt/-/tstttt-1.0.0.tgz",
+        "integrity": "sha512-..."
+      }
+    }
+  },
+  "manifestVersion": "1.0.0"
+}

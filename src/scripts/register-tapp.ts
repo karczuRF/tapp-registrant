@@ -7,14 +7,17 @@ import {
   GetUserArgs,
 } from "../types/registry-repo";
 import { getTappManifest } from "./get-tapp-data";
+import { addImagesToRegistry } from "./add-images";
 import path from "path";
 
-export const TAPPLET_REGISTRY_REPO = "tapp-registry";
-export const BASE_BRANCH = "main";
-export const PR_TITLE_PREFIX = "New Tapplet:";
-export const SRC_DIR = "src";
-export const MANIFEST_FILE = "tapplet.manifest.json";
-export const REGISTRY_OWNER = "karczuRF";
+import {
+  BASE_BRANCH,
+  MANIFEST_FILE,
+  REGISTRY_OWNER,
+  SRC_DIR,
+  TAPPLET_REGISTRY_REPO,
+  VER_DIR,
+} from "../constants";
 
 async function getAuthenticatedUser({ octokit }: GetUserArgs) {
   try {
@@ -67,7 +70,7 @@ async function createFile({
       repo,
       path: filePath,
       message: `Add ${filePath}`,
-      content: Buffer.from(fileContent).toString("base64"),
+      content: fileContent,
       branch: branchName,
     });
     return filePath;
@@ -100,7 +103,7 @@ async function createPullRequest({
   }
 }
 
-export async function registerTapp() {
+export async function initOctokitAndGetAuthUser() {
   if (!process.env.GITHUB_ACCESS_TOKEN) {
     throw new Error("Registration error: github access token not found");
   }
@@ -109,17 +112,29 @@ export async function registerTapp() {
   });
 
   const user = await getAuthenticatedUser({ octokit });
-  const tappletManifest = getTappManifest();
+  return user;
+}
 
-  // TODO add owner
+export async function registerTapp() {
+  if (!process.env.GITHUB_ACCESS_TOKEN) {
+    throw new Error("Registration error: github access token not found");
+  }
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_ACCESS_TOKEN,
+  });
+
+  // TODO adjust here the tapp-registry owner
   const owner = REGISTRY_OWNER;
   if (!owner) {
     throw new Error("Registration error: owner not found");
   }
 
+  const user = await getAuthenticatedUser({ octokit });
+  const tappletManifest = getTappManifest();
+
   const branchName = `${tappletManifest.packageName}@${tappletManifest.version}`;
   console.log(`Branch name: ${branchName}`);
-  console.log(`Branch created by: ${user.name}`);
+  console.log(`Branch created by: ${user.login}`);
   try {
     const createdBranch = await createBranch({
       octokit,
@@ -138,19 +153,33 @@ export async function registerTapp() {
     const filePath = path.join(
       SRC_DIR,
       tappletManifest.packageName,
+      VER_DIR,
       tappletManifest.version,
       MANIFEST_FILE
     );
-    const fileContent = JSON.stringify(tappletManifest);
-    const createdFile = await createFile({
+    const manifestFileContent = Buffer.from(
+      JSON.stringify(tappletManifest)
+    ).toString("base64");
+
+    await createFile({
       octokit,
       owner,
       repo: TAPPLET_REGISTRY_REPO,
       filePath,
-      fileContent,
+      fileContent: manifestFileContent,
       branchName,
     });
-    console.log(`File added: ${createdFile}`);
+  } catch (error) {
+    throw error;
+  }
+
+  try {
+    await addImagesToRegistry(
+      tappletManifest.packageName,
+      owner,
+      branchName,
+      octokit
+    );
   } catch (error) {
     throw error;
   }
@@ -162,5 +191,3 @@ export async function registerTapp() {
     throw error;
   }
 }
-
-registerTapp();

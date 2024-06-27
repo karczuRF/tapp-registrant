@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --project tsconfig.build.json",
     "build-n-copy": "npm run build && copyfiles src/images/*.svg dist",
-    "register-tapp": "npx tsx src/scripts/register-tapp.ts"
+    "register-tapp": "npx tsx src/scripts/main.ts",
+    "init-tapp": "npx tsx src/scripts/init-tapp.ts"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +22,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@inquirer/prompts": "^5.0.6",
     "@types/node": "^20.14.2",
     "dotenv": "^16.4.5",
     "octokit": "^4.0.2",

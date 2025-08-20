@@ -20,8 +20,16 @@ export function writeManifestFile(manifest: TappletManifest): void {
 export function getPackageJson(): NpmPackageJson {
   const packagePath = path.resolve("package.json")
 
-  const packageData = fs.readFileSync(packagePath, "utf8")
-  return JSON.parse(packageData)
+  try {
+    const packageData = fs.readFileSync(packagePath, "utf8")
+    return JSON.parse(packageData)
+  } catch (error) {
+    if (error instanceof Error && (error as NodeJS.ErrnoException).code === "ENOENT") {
+      console.log("You must be in your tapplet root directory to read package.json file")
+      return { name: "tapp-registrant", version: "unknown", description: "", author: "", licence: "" }
+    }
+    throw error
+  }
 }
 
 export function removeManifestFile(): void {

@@ -5,6 +5,10 @@ The Tapplet Registrant is a simple tool that allows you to quickly register your
 
 ## Registration process
 
+> **Note:**  
+> To start the tapplet registration process, please ensure you run the tool from the tapplet's root directory. This directory must contain the tapplet's `package.json` file. Running the tool outside this directory will result in an error, as the tool relies on the presence of the `package.json` file to function correctly.
+
+
 #### 1. GitHub Access Token
 
 Make sure the GitHub Access Token is created and added to the `~/.npmrc` file. See [Working with the npm registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry).

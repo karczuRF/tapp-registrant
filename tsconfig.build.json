@@ -1,8 +1,8 @@
 {
-  "display": "Build",
   "compilerOptions": {
-    "target": "es2019",
-    "module": "commonjs",
+    "lib": ["es2021", "dom"],
+    "target": "es2021",
+    "module": "CommonJS",
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",

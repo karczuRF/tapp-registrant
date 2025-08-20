@@ -3,11 +3,12 @@
     "rootDir": "src",
     "outDir": "dist",
     "strict": true,
-    "target": "es6",
+    "target": "ES2021",
+    "lib": ["ES2021", "DOM"],
     "sourceMap": true,
     "esModuleInterop": true,
-    "module": "Node16",
-    "moduleResolution": "node16",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true
   }
 }

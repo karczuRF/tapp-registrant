@@ -10,9 +10,9 @@ import {
 } from "./scripts/index.js"
 import figlet from "figlet"
 import { getGhp } from "./helpers/getGhp.js"
-
 import { init } from "./scripts/init.js"
 import { writeEmptyManifest } from "./scripts/writeEmptyManifest.js"
+import pkg from "../package.json" with { type: "json" }
 
 console.log(figlet.textSync("TAPPLET REGISTRANT", { font: "Mini" }))
 
@@ -74,5 +74,6 @@ program
   .action(() => {
     validateJsonSchema()
   })
+program.version(pkg.version, "-v, --version", "output the current version")
 
 program.parse()

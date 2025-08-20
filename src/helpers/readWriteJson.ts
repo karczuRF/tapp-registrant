@@ -26,7 +26,6 @@ export function getPackageJson(): NpmPackageJson {
   } catch (error) {
     if (error instanceof Error && (error as NodeJS.ErrnoException).code === "ENOENT") {
       console.log("You must be in your tapplet root directory to read package.json file")
-      return { name: "tapp-registrant", version: "unknown", description: "", author: "", licence: "" }
     }
     throw error
   }

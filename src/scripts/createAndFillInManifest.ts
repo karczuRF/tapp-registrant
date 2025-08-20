@@ -29,8 +29,8 @@ export async function createAndFillInManifest() {
   try {
     const { user } = await initOctokitAndGetAuthUser()
 
-    const manifest = writeEmptyManifest()
     const packageJson = getPackageJson()
+    const manifest = writeEmptyManifest()
     const packageDist = await getPackageDist()
 
     manifest.packageName = await getPackageName(packageJson.name)
